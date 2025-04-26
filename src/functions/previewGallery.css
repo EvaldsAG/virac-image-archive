@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    gap: 2%;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.item:nth-child(1),
+.item:nth-child(3) {
+    width: 20%;
+    height: 32%;
+    align-self: center;
+}
+
+.item:nth-child(2) {
+    width: 674px;
+    height: 500px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-self: center;
+
+}
+
+.item:nth-child(4),
+.item:nth-child(5),
+.item:nth-child(6),
+.item:nth-child(7),
+.item:nth-child(8),
+.item:nth-child(9),
+.item:nth-child(10) {
+    width: 160px;
+    align-self: center;
+    margin-top: 20px;
+
+}
+
+.item:nth-child(4) {
+    break-before: row;
+    /* Forces thumbnails to start a new row */
+}

@@ -1,0 +1,28 @@
+.carousel-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.image {
+    width: 120px;
+    height: auto;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.image.selected {
+    border: 3px solid #00d1ff;
+    box-shadow: 0 0 10px #00d1ff;
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out;
+}

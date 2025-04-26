@@ -1,0 +1,87 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  /* margin-top: -15%; */
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logoCollection {
+  position: static;
+  top: center;
+  margin-left: 140px;
+}
+
+/* .logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+} */
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+body {
+  /* background: rgb(13, 13, 14);
+  background: linear-gradient(80deg, rgba(13, 13, 14, 1) 39%, rgba(5, 2, 23, 1) 98%); */
+  background: rgb(8, 8, 9);
+  background: linear-gradient(0deg, rgba(8, 8, 9, 1) 39%, rgba(5, 2, 23, 1) 98%);
+
+
+}
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 52px;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+
+}
+
+.title {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title h1 {
+  text-align: center;
+  margin: auto;
+
+}
+
+.spacer {
+  height: 100px;
+}

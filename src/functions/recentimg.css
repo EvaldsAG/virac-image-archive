@@ -1,0 +1,122 @@
+.recentContainer {
+    display: flex;
+    gap: 2%;
+    /* flex-wrap: wrap; */
+    align-content: start;
+    align-items: stretch;
+}
+
+.recentImageCNTR {
+    width: 674px;
+    height: 500px;
+    align-self: center;
+}
+
+
+.recentSelect {
+    align-self: flex-start;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Aligns children (like <select>) to the left */
+    gap: 10px;
+    /* Adds some spacing between elements */
+
+}
+
+.recentSelect h1 {
+    align-self: center;
+}
+
+
+.recentSelect select {
+    width: 200px;
+    /* Adjust width for a more prominent look */
+    height: 45px;
+    /* Make it T H I C C */
+    font-size: 1.1rem;
+    /* Bigger text for readability */
+    padding: 8px 12px;
+    /* Add inner spacing */
+    border: 2px solid #555;
+    /* Slightly bolder border */
+    border-radius: 8px;
+    /* Smooth, rounded corners */
+    background-color: #222;
+    /* Dark theme */
+    color: #fff;
+    /* White text */
+    cursor: pointer;
+    /* Indicate interactivity */
+    transition: all 0.2s ease-in-out;
+    /* Smooth hover effect */
+
+}
+
+/* Hover & Focus Styles */
+.recentSelect select:hover,
+.recentSelect select:focus {
+    background-color: #333;
+    /* Slightly lighter on hover */
+    border-color: #888;
+    /* Highlight the border */
+
+
+}
+
+
+.recentText {
+    text-align: left;
+}
+
+.recentImageCNTR img {
+
+    border: 4px solid #555;
+    border-radius: 8px;
+    cursor: pointer;
+
+}
+
+
+
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modalImage {
+    max-width: 100%;
+    max-height: 80vh;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}

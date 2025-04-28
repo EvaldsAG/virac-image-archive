@@ -3,6 +3,7 @@ import { supabase, supabaseURL } from './supabaseClient';
 // import { getRecentImage } from "./getRecentImage";
 import { useImage } from "./RecentImageContext";
 import "./recentimg.css"
+import "./modal.css";
 
 export const RecentIMG: React.FC = () => {
     const [selectwavelength, setWavelength] = useState("-w1");
@@ -17,35 +18,6 @@ export const RecentIMG: React.FC = () => {
 
     };
 
-
-
-    // useEffect(() => {
-    //     // Fetch the image immediately on mount and when wavelength changes
-    //     handleGetRecentImage();
-
-    //     // Set up the interval to refresh every 24 hours
-    //     const interval = setInterval(async () => {
-    //         await handleGetRecentImage();
-    //     }, 86400000);
-
-    //     return () => clearInterval(interval);
-    // }, [selectwavelength]); // Add selectwavelength as a dependency
-
-    // const handleGetRecentImage = async () => {
-    //     if (!selectwavelength) return; // Guard clause to ensure wavelength is set
-    //     const recentImagePath = await getRecentImage();
-    //     if (recentImagePath) {
-    //         setImagePath(recentImagePath);
-    //         console.log(`Most Recent ${selectwavelength} Image Path:`, recentImagePath);
-    //     } else {
-    //         setImagePath(null);
-    //         console.log(`Failed to fetch the most recent ${selectwavelength} image.`);
-    //     }
-    // };
-
-
-
-    // Modal focus trap logic remains unchanged
     useEffect(() => {
         if (isModalOpen) {
             const trapFocus = (event: KeyboardEvent) => {
@@ -117,3 +89,7 @@ export const RecentIMG: React.FC = () => {
         </div>
     );
 };
+
+
+
+

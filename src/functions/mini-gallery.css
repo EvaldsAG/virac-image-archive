@@ -1,80 +1,46 @@
-    .container {
-        display: flex;
-        gap: 2%;
-        flex-wrap: wrap;
-        align-content: stretch;
-        justify-content: center;
-        flex-direction: row;
-    }
-
-    .button {
-        width: 20%;
-        height: 32%;
-        align-self: center;
-    }
-
-    .image {
-        width: 674px;
-        height: 500px;
-        flex-grow: 1;
-        flex-shrink: 0;
-        align-self: center;
-    }
-
-    .scroller {
-        flex-basis: 100%;
-        align-self: center;
-        margin-top: 20px;
-    }
-
-
-
-
-
-
-
-
-
-
-    /* .container {
+.container {
     display: flex;
-    gap: 2%;
-    flex-wrap: wrap;
-    align-content: stretch;
+    align-items: center;
     justify-content: center;
-    flex-direction: row;
+    gap: 1rem;
 }
 
-.item:nth-child(1),
-.item:nth-child(3) {
-    width: 20%;
-    height: 32%;
-    align-self: center;
+.carousel-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
-.item:nth-child(2) {
-    width: 674px;
-    height: 500px;
-    flex-grow: 1;
-    flex-shrink: 0;
-    align-self: center;
-
+.carousel {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
 }
 
-.item:nth-child(4),
-.item:nth-child(5),
-.item:nth-child(6),
-.item:nth-child(7),
-.item:nth-child(8),
-.item:nth-child(9),
-.item:nth-child(10) {
-    width: 160px;
-    align-self: center;
-    margin-top: 20px;
-
+.image {
+    width: 120px;
+    height: auto;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.item:nth-child(4) {
-    break-before: row;
-    /* Forces thumbnails to start a new row
-} */
+
+.image.selected {
+    border: 3px solid #00d1ff;
+    box-shadow: 0 0 10px #00d1ff;
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 80vh;
+}
+
+.mainImage {
+    border: 4px solid #555;
+    border-radius: 8px;
+    cursor: pointer;
+}

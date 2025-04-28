@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { RecentIMG } from "./functions/recentimg.tsx";
-import { MiniGallery } from "./functions/mini-gallery.tsx";
-import Greer from "./functions/test.tsx";
+// import { MiniGallery } from "./functions/mini-gallery.tsx";
+import MiniGallery from "./functions/mini-gallery.tsx";
 import './App.css'
 
 
@@ -34,32 +34,7 @@ function App() {
       <div className="spacer"></div>
       <MiniGallery />
 
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <Greer />
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
-      <p>hoi o/</p>
+
 
     </>
   )

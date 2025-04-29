@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase, supabaseURL } from "./supabaseClient";
 import { motion } from "framer-motion";
 import { useVirtualizer } from "@tanstack/react-virtual";

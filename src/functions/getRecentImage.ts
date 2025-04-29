@@ -53,7 +53,7 @@ export const getRecentImage = async (): Promise<string | null> => {
     // Parse and sort images by hours, minutes, seconds as integers
     const sortedImages = images
         .map(img => {
-            const [hours, minutes, seconds, wavelength] = img.name.split('-');
+            const [hours, minutes, seconds] = img.name.split('-'); //, wavelength
             return {
                 name: img.name,
                 hours: parseInt(hours),

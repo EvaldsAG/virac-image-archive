@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase, supabaseURL } from './supabaseClient';
+import { supabaseURL } from './supabaseClient'; //supabase,
 // import { getRecentImage } from "./getRecentImage";
 import { useImage } from "./RecentImageContext";
 import "./recentimg.css"

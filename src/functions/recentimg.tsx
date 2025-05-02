@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { supabaseURL } from './supabaseClient'; //supabase,
 // import { getRecentImage } from "./getRecentImage";
 import { useImage } from "./RecentImageContext";
@@ -18,32 +18,6 @@ export const RecentIMG: React.FC = () => {
 
     };
 
-    useEffect(() => {
-        if (isModalOpen) {
-            const trapFocus = (event: KeyboardEvent) => {
-                if (event.key === "Tab" && modalRef.current) {
-                    const focusableElements = modalRef.current.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
-                    const firstElement = focusableElements[0];
-                    const lastElement = focusableElements[focusableElements.length - 1];
-
-                    if (event.shiftKey && document.activeElement === firstElement) {
-                        event.preventDefault();
-                        lastElement.focus();
-                    } else if (!event.shiftKey && document.activeElement === lastElement) {
-                        event.preventDefault();
-                        firstElement.focus();
-                    }
-                }
-
-                if (event.key === "Escape") {
-                    closeModal();
-                }
-            };
-
-            document.addEventListener("keydown", trapFocus);
-            return () => document.removeEventListener("keydown", trapFocus);
-        }
-    }, [isModalOpen]);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);

@@ -5,7 +5,15 @@
     gap: 1rem;
 }
 
-.carousel-container {
+.wavelength-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.timestamp-container {
     overflow-x: auto;
     white-space: nowrap;
     display: flex;
@@ -43,4 +51,19 @@
     border: 4px solid #555;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.nasaImage {
+    border: 4px solid #555;
+    border-radius: 8px;
+    cursor: pointer;
+    gap: 10px;
+    max-width: 100%;
+
+}
+
+.timestamp-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

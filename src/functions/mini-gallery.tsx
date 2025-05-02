@@ -4,6 +4,11 @@ import { motion } from "framer-motion";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import "./mini-gallery.css";
 import "./modal.css";
+import Datepicker from './datepicker';
+
+
+
+
 
 export default function MiniGallery() {
     type ImageData = {
@@ -19,6 +24,7 @@ export default function MiniGallery() {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const parentRef = useRef<HTMLDivElement>(null);
+
 
 
     useEffect(() => {
@@ -71,34 +77,6 @@ export default function MiniGallery() {
         rowVirtualizer.scrollToIndex(currentIndex, { align: "center" });
     }, [currentIndex, rowVirtualizer]);
 
-
-    useEffect(() => {
-        if (isModalOpen) {
-            const trapFocus = (event: KeyboardEvent) => {
-                if (event.key === "Tab" && modalRef.current) {
-                    const focusableElements = modalRef.current.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
-                    const firstElement = focusableElements[0];
-                    const lastElement = focusableElements[focusableElements.length - 1];
-
-                    if (event.shiftKey && document.activeElement === firstElement) {
-                        event.preventDefault();
-                        lastElement.focus();
-                    } else if (!event.shiftKey && document.activeElement === lastElement) {
-                        event.preventDefault();
-                        firstElement.focus();
-                    }
-                }
-
-                if (event.key === "Escape") {
-                    closeModal();
-                }
-            };
-
-            document.addEventListener("keydown", trapFocus);
-            return () => document.removeEventListener("keydown", trapFocus);
-        }
-    }, [isModalOpen]);
-
     const closeModal = () => setIsModalOpen(false);
 
     const selected = images[currentIndex];
@@ -109,27 +87,21 @@ export default function MiniGallery() {
             <div className="main-image-container">
                 <header>
                     <h1>Gallery</h1>
-                    <p>
-                        This is an at‑a‑glance preview. Full gallery available at a later date.
-                    </p>
                 </header>
 
                 <div className="container">
-                    <button
+                    {/* <button
                         className="nav-btn-prev"
                         onClick={prevImage}
                         aria-label="Previous image"
                         disabled={!images.length}
                     >
                         &lt;
-                    </button>
+                    </button> */}
 
                     <div
                         className="image-wrapper"
-
-
                         aria-label="Open image modal"
-
                     >
                         {selected && (
                             <img
@@ -146,38 +118,36 @@ export default function MiniGallery() {
                             />
                         )}
                     </div>
+                    <div
+                        className="image-wrapper"
+                        aria-label="Open image modal"
+                    >
+                        {selected && (
+                            <img
+                                src={'https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0304.jpg'}
+                                onClick={() => setIsModalOpen(true)}
+                                className="nasaImage"
+                                alt={
+                                    "Nasa image"
+                                }
+                            />
+                        )}
+                    </div>
 
-                    <button
+                    {/* <button
                         className="nav-btn-next"
                         onClick={nextImage}
                         aria-label="Next image"
                         disabled={!images.length}
                     >
                         &gt;
-                    </button>
+                    </button> */}
                 </div>
 
-                <div className="date-picker">
-                    <label>
-                        Start Date:{" "}
-                        <input
-                            type="date"
-                            value={startDate || ""}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        End Date:{" "}
-                        <input
-                            type="date"
-                            value={endDate || ""}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </label>
-                </div>
+
             </div>
 
-            <div className="carousel-container" ref={parentRef}>
+            <div className="wavelength-container" ref={parentRef}>
                 <motion.div
                     className="carousel"
                     drag="x"
@@ -206,6 +176,24 @@ export default function MiniGallery() {
                     ))}
                 </motion.div>
             </div>
+
+            <div className="timestamp-container" ref={parentRef}>
+
+                <div className="date-picker">
+                    <Datepicker />
+                </div>
+                <motion.div
+                    className="carousel"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 100 }}
+                >
+
+
+
+                </motion.div>
+            </div>
+
+
 
             {isModalOpen && (
                 <div className="modalOverlay" onClick={closeModal}>

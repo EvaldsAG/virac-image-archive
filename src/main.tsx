@@ -1,16 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from "react-router-dom";
-import { RecentImageProvider } from "./functions/RecentImageContext.tsx";
+import { MetadataProvider } from "./functions/MetadataContext.tsx";
 import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <RecentImageProvider>
+      <MetadataProvider>
         <App />
-      </RecentImageProvider>
+      </MetadataProvider>
     </BrowserRouter>
   </StrictMode>
 )

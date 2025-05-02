@@ -1,19 +1,42 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { supabaseURL } from './supabaseClient'; //supabase,
 // import { getRecentImage } from "./getRecentImage";
-import { useImage } from "./RecentImageContext";
+import { getMetadata } from "./MetadataContext";
 import "./recentimg.css"
 import "./modal.css";
 
 export const RecentIMG: React.FC = () => {
-    const [selectwavelength, setWavelength] = useState("-w1");
+    const [selectwavelength, setWavelength] = useState("-w1.png");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
-    const { recentImagePath } = useImage();
+    const { metadata } = getMetadata();
+
+
+
+    const [imagePath, setImagePath] = useState(
+        metadata
+            .filter(img => img.image_path.endsWith("-w1.png"))
+            .map(img => img.image_path));
+
+
+
+    const recentimg = imagePath[imagePath.length - 1]
+
+    useEffect(() => {
+
+        setImagePath(metadata
+            .filter(img => img.image_path.endsWith(selectwavelength))
+            .map(img => img.image_path));
+
+    }, [metadata, selectwavelength]);
+
+
+
 
 
 
     const handleWavelengthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
         setWavelength(event.target.value);
 
     };
@@ -26,12 +49,12 @@ export const RecentIMG: React.FC = () => {
         <div className="recentContainer">
             <div className="recentImageCNTR">
                 <img
-                    src={`${supabaseURL}/storage/v1/object/public/solar_images/${recentImagePath}${selectwavelength}.png`}
+                    src={`${supabaseURL}/storage/v1/object/public/solar_images/${recentimg}`}
                     className="recentImage"
                     alt="most recently captured image"
                     onClick={openModal}
-                    tabIndex={0}
                 />
+
             </div>
             <div className="recentSelect">
                 <h1>Most Recent Image</h1>
@@ -41,10 +64,10 @@ export const RecentIMG: React.FC = () => {
                     Here is the most recently uploaded image from the radio telescope.
                 </p>
                 <select onChange={handleWavelengthChange} value={selectwavelength}>
-                    <option value="-w1">Wavelength 1</option>
-                    <option value="-w2">Wavelength 2</option>
-                    <option value="-w3">Wavelength 3</option>
-                    <option value="-w4">Wavelength 4</option>
+                    <option value="-w1.png">Wavelength 1</option>
+                    <option value="-w2.png">Wavelength 2</option>
+                    <option value="-w3.png">Wavelength 3</option>
+                    <option value="-w4.png">Wavelength 4</option>
                 </select>
             </div>
 
@@ -53,7 +76,7 @@ export const RecentIMG: React.FC = () => {
                     <div className="modalContent" ref={modalRef} onClick={(e) => e.stopPropagation()}>
                         <button className="closeButton" onClick={closeModal}>×</button>
                         <img
-                            src={`${supabaseURL}/storage/v1/object/public/solar_images/${recentImagePath}${selectwavelength}.png`}
+                            src={`${supabaseURL}/storage/v1/object/public/solar_images/${recentimg}`}
                             className="modalImage"
                             alt="zoomed in solar image"
                         />

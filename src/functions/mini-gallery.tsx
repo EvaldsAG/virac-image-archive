@@ -21,6 +21,7 @@ export default function MiniGallery() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const { metadata } = getMetadata();
+    const calendarRef = useRef<HTMLInputElement>(null);
 
 
     // allimg -> selected date(most recent img i guess)/selected wavelength(default w1)
@@ -37,10 +38,13 @@ export default function MiniGallery() {
         setCurrentIndex(temp.length - 1);
         setSelectedImage(temp[currentIndex]);
 
-    }, [metadata])
+    }, [metadata]);
 
 
-    const calendarRef = useRef<HTMLInputElement>(null);
+
+
+
+
 
     // callendar(defaults the latest date), select date(defaults latest time), display every image in that date(selected latest time)
 
@@ -59,7 +63,7 @@ export default function MiniGallery() {
                 <div className="container">
 
                     <button
-                        onClick={() => console.log(currentIndex)}>
+                        onClick={() => console.log(metadata)}>
                         hi
                     </button>
                     <button

@@ -10,7 +10,7 @@ interface MetadataContextType {
 
 export type ImageData = {
     image_path: string;
-    capture_date: Date;
+    capture_date: string;
 };
 
 // Create the context with default values

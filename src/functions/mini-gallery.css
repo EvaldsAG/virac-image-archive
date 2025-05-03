@@ -67,3 +67,11 @@
     align-items: center;
     justify-content: center;
 }
+
+.air-datepicker-cell.has-image {
+
+    background: #32e5f97b;
+    color: #000 !important;
+    border-radius: 6px;
+    font-weight: 600;
+}

@@ -3,12 +3,12 @@ import { supabase } from "./supabaseClient";
 
 // Define the context type
 interface MetadataContextType {
-    metadata: ImageData[];
+    metadata: ImageMetadata[];
     refreshMetadata: () => void;
 }
 
 
-export type ImageData = {
+export type ImageMetadata = {
     image_path: string;
     capture_date: string;
 };
@@ -18,7 +18,7 @@ const MetadataContext = createContext<MetadataContextType | undefined>(undefined
 
 // Context provider component
 export const MetadataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [metadata, setMetadata] = useState<ImageData[]>([]);
+    const [metadata, setMetadata] = useState<ImageMetadata[]>([]);
 
 
     const refreshMetadata = async () => {

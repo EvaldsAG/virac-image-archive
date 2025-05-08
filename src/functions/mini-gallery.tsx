@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase, supabaseURL } from "./supabaseClient";
-import { motion } from "framer-motion";
-import { getMetadata, ImageData } from "./MetadataContext";
+import { getMetadata, ImageMetadata } from "./MetadataContext";
 import "./mini-gallery.css";
 import "./modal.css";
 
@@ -10,66 +9,73 @@ import AirDatepicker from 'air-datepicker';
 import localeEn from 'air-datepicker/locale/en';
 import 'air-datepicker/air-datepicker.css';
 
-
+import { ImageCarousel, CarouselItem } from "./imageCarousel";
 
 
 
 export default function MiniGallery() {
 
-    const [filterimg, setFilterimg] = useState<ImageData[]>([])
-    const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [pictureDates, setPictureDates] = useState<string[]>([]) // all the date with available images
+    const [selectedImage, setSelectedImage] = useState<ImageMetadata | null>(null);
+    const [selectedFrequency, setSelectedFrequency] = useState<string>("w1") // keep in mind that every single day wont have every single frequency
+
+    const [selDayCarouselIndex, setSelDayCarouselIndex] = useState(-1); // index in the list of pics for selected day, -1 means last item
+    const [selFreqCarouselIndex, setSelFreqCarouselIndex] = useState(0);
+
+    const [selectedDate, setSelectedDate] = useState<string>(""); // changes to selected date
+
     const { metadata } = getMetadata();
-    const calendarRef = useRef<HTMLInputElement>(null);
 
-    const calendarInputRef = useRef<HTMLInputElement>(null);
-    const datepickerRef = useRef<AirDatepicker | null>(null);
-
-    // allimg -> selected date(most recent img i guess)/selected wavelength(default w1)
+    const calendarInputRef = useRef<HTMLDivElement>(null);
+    const datepickerRef = useRef<AirDatepicker<HTMLDivElement> | null>(null);
 
 
+    // makes keys of all dates with images in them
+    const imagesByDate = useMemo<Record<string, ImageMetadata[]>>(() => {
+        const map: Record<string, ImageMetadata[]> = {};
+        metadata.forEach((imgMeta) => {
+            if (map[imgMeta.capture_date] === undefined)
+                map[imgMeta.capture_date] = [];
 
-
-    useEffect(() => {
-
-        const temp = metadata
-            .filter(img => img.image_path.endsWith("-w1.png"))
-            .map((img) => ({
-                image_path: `${supabaseURL}/storage/v1/object/public/solar_images/${img.image_path}`,
-                capture_date: img.capture_date,
-            }));
-        setFilterimg(temp);
-        setCurrentIndex(temp.length - 1);
-        setSelectedImage(temp[temp.length - 1]);
-
-    }, [metadata]);
-
-
-
-    const imagesByDate = useMemo<Record<string, ImageData[]>>(() => {
-        const map: Record<string, ImageData[]> = {};
-        filterimg.forEach((img) => {
-            const key = img.capture_date.slice(0, 10);
-            (map[key] ??= []).push(img);
+            map[imgMeta.capture_date].push(imgMeta);
         });
 
-        Object.values(map).forEach((arr) =>
-            arr.sort((a, b) => a.capture_date.localeCompare(b.capture_date))
-        );
         return map;
-    }, [filterimg]);
+    }, [pictureDates]);
 
-    const availableDates = useMemo(() => Object.keys(imagesByDate).sort(), [imagesByDate]);
-    const availableDatesSet = useMemo(() => new Set(availableDates), [availableDates]);
-
+    // Acquire all the dates with available pictures
+    // unique days that contain images
     useEffect(() => {
-        if (!calendarInputRef.current || !availableDates.length) return;
+        const allDates = metadata
+            .filter(img => img.image_path.endsWith("-w1.png")) // this assumes that the "-w1" frequency always exists and that its .png
+            .map((img) => img.capture_date);
 
+        setPictureDates(allDates);
+        setSelectedDate(allDates[allDates.length - 1]);
+    }, [metadata]);
+    // metadata context needs some sorting done potentially
+    // the order that images were uploaded to the supabase metadata matters.
 
-        const latestDate = availableDates[availableDates.length - 1];
-        setSelectedImage(imagesByDate[latestDate].slice(-1)[0]);
+    // sets the default value when necessary
+    useEffect(() => {
+        if (Object.keys(imagesByDate).length === 0)
+            return;
 
-        datepickerRef.current?.destroy();
+        const selectedDateClean = (selectedDate === "" ? pictureDates[pictureDates.length - 1] : selectedDate);
+        const allDayImages = imagesByDate[selectedDateClean]
+            .filter(img => img.image_path.endsWith(selectedFrequency + ".png"));
+        const latestImage = allDayImages[allDayImages.length - 1]
+        setSelectedImage(latestImage);
+        setSelDayCarouselIndex(-1); // -1 means last
+    }, [pictureDates, imagesByDate, selectedDate]);
+
+    // Generates the datepicker, only changes if the metadata updates
+    useEffect(() => {
+        if (!calendarInputRef.current || !pictureDates.length) return;
+
+        const latestDate = pictureDates[pictureDates.length - 1];
+
+        datepickerRef.current?.destroy(); // recreates the calendar if the metadata changes
         datepickerRef.current = new AirDatepicker(calendarInputRef.current, {
             locale: localeEn,
             inline: true,
@@ -78,7 +84,7 @@ export default function MiniGallery() {
                 if (cellType !== 'day') return;
                 const d = Array.isArray(date) ? date[0] : date;
                 const key = d.toLocaleDateString('en-CA');
-                const hasImage = availableDatesSet.has(key);
+                const hasImage = Object.keys(imagesByDate).includes(key);
                 return {
                     disabled: !hasImage,
                     classes: hasImage ? 'has-image' : '',
@@ -87,10 +93,9 @@ export default function MiniGallery() {
             onSelect({ date }) {
                 if (!date) return;
                 const d = Array.isArray(date) ? date[0] : date;
-                const key = d.toLocaleDateString('en-CA');
-                const dayImages = imagesByDate[key];
-                if (dayImages?.length) {
-                    setSelectedImage(dayImages.slice(-1)[0]);
+                const formattedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                if (Object.keys(imagesByDate).includes(formattedDate)) { // if the day contains any pics
+                    setSelectedDate(formattedDate);
                 }
             },
         });
@@ -98,45 +103,83 @@ export default function MiniGallery() {
         return () => {
             datepickerRef.current?.destroy();
         };
-    }, [availableDates, availableDatesSet, imagesByDate]);
+    }, [imagesByDate]);
 
-    // callendar(defaults the latest date), select date(defaults latest time), display every image in that date(selected latest time)
+    // day image entry carousel, hold all the items in it
+    const selectedDayCarousel = useMemo<CarouselItem[]>(() => {
+        if (Object.keys(imagesByDate).length === 0)
+            return [];
+
+        const picArray = imagesByDate[selectedDate]
+            .filter(img => img.image_path.endsWith(selectedFrequency + ".png"));
+
+        const tempArray: CarouselItem[] = [];
+        for (const [i, value] of picArray.entries()) {
+            tempArray.push({
+                imageUrl: value.image_path,
+                onImageClick: () => {
+                    setSelectedImage(value);
+                    setSelDayCarouselIndex(i);
+                },
+                label: value.image_path.slice(11, 19).replace(/-/g, ":"), // replaces all instances of the character "-" regex magic i guess lol
+            });
+        }
+
+        return tempArray;
+    }, [selectedDate, imagesByDate, selectedFrequency]);
+
+    // frequency carousel items
+    const selFrequencyCarousel = useMemo<CarouselItem[]>(() => {
+        if (Object.keys(imagesByDate).length === 0 || selectedImage == null)
+            return [];
+
+        const dateTimePathPart = selectedImage.image_path.slice(0, 19);
+        const picArray = imagesByDate[selectedDate]
+            .filter(img => img.image_path.startsWith(dateTimePathPart));
+
+        const tempArray: CarouselItem[] = [];
+        for (const [i, value] of picArray.entries()) {
+            const frequencyStr = value.image_path.slice(20, -4);
+            tempArray.push({
+                imageUrl: value.image_path,
+                onImageClick: () => {
+                    setSelectedFrequency(frequencyStr);
+                    setSelectedImage(value);
+                    setSelFreqCarouselIndex(i);
+                },
+                label: frequencyStr,
+            });
+        }
+
+        return tempArray;
+    }, [imagesByDate, selectedDate, selectedImage]);
 
     return (
-        <div className="whole-container">
-
-            <div className="main-image-container">
-                <header>
-                    <h1>Gallery</h1>
-                </header>
-
-                {/* <div className="container">
-
-                    <button
-                        onClick={() => console.log(filterimg[0].capture_date)}>
-                        hi
-                    </button>
-                    <button
-                        onClick={() => console.log(selectedImage)}>
-                        hi2
-                    </button>
-                    <img src={selectedImage?.image_path} alt="Most‑recent image" />
-
-                </div> */}
-                <input ref={calendarInputRef} placeholder="Select date" readOnly />
-
-                {selectedImage && (
-                    <img
-                        src={selectedImage.image_path}
-                        alt={`Solar capture ${selectedImage.capture_date}`}
-                    />
-                )}
+        <div className="whole-container" >
+            <header>
+                <h1>Gallery</h1>
+            </header>
+            {selectedImage && (
+                <img className="mainImage"
+                    src={`${supabaseURL}/storage/v1/object/public/solar_images/${selectedImage.image_path}`}
+                    alt={`Solar capture ${selectedImage.capture_date}`}
+                />
+            )}
+            <div className="callendar-wavelengths">
+                <div ref={calendarInputRef} />
+                <ImageCarousel
+                    carouselItems={selFrequencyCarousel}
+                    selected={selFreqCarouselIndex}
+                />
+            </div>
+            <div className="dates">
+                <ImageCarousel
+                    carouselItems={selectedDayCarousel}
+                    selected={selDayCarouselIndex}
+                />
             </div>
 
         </div>
+
     );
 }
-
-
-// make a function that doesn't let you select dates that dont exist
-

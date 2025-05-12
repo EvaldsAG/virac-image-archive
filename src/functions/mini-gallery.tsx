@@ -30,6 +30,7 @@ export default function MiniGallery() {
     const datepickerRef = useRef<AirDatepicker<HTMLDivElement> | null>(null);
 
 
+
     // makes keys of all dates with images in them
     const imagesByDate = useMemo<Record<string, ImageMetadata[]>>(() => {
         const map: Record<string, ImageMetadata[]> = {};
@@ -120,6 +121,7 @@ export default function MiniGallery() {
                 onImageClick: () => {
                     setSelectedImage(value);
                     setSelDayCarouselIndex(i);
+                    // console.log(selectedImage?.image_path);
                 },
                 label: value.image_path.slice(11, 19).replace(/-/g, ":"), // replaces all instances of the character "-" regex magic i guess lol
             });
@@ -154,6 +156,93 @@ export default function MiniGallery() {
         return tempArray;
     }, [imagesByDate, selectedDate, selectedImage]);
 
+    //download button
+    const downloadCurrent = async () => {
+
+        if (!selectedImage) return;
+
+        const selectedPath = selectedImage.image_path;
+        // const fileName = path.split('/').pop();
+        //we have images from w1 to w4
+        //2025/02/11/17-33-21-w1.png
+        //2025/02/11/17-33-21-w2.png
+        //2025/02/11/17-33-21-w3.png
+        //2025/02/11/17-33-21-w4.png
+        const modifiedPath = selectedPath.split('/').pop() ?? 'sum ting wong';
+        const startPath = selectedDate.replace(/-/g, "/");
+        // console.log(startPath);
+        const fileName = modifiedPath.slice(0, 8) ?? 'sum ting wong 2';
+
+        const wav = ['w1.png', 'w2.png', 'w3.png', 'w4.png'];
+
+        for (let i = 0; i < wav.length; i++) {
+
+            // grab the blob from Storage
+            const { data: blob, error } = await supabase
+                .storage
+                .from('solar_images')
+                .download(`${startPath}/${fileName}-${wav[i]}`);
+            console.log(`${startPath}/${fileName}-${wav[i]}`)
+
+            if (error || !blob) {
+                console.error('Download failed:', error);
+                return;
+            }
+            // turn the blob into an object-URL
+            const url = URL.createObjectURL(blob);
+
+            // create a temporary <a download> element and click it
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (`${fileName}-${wav[i]}`);          // this is the name that shows up in “Save as…”
+            document.body.appendChild(a);   // Firefox needs the link in the DOM
+            a.click();
+            a.remove();
+
+            // tidy up
+            URL.revokeObjectURL(url);
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+    // useEffect(() => {
+    //     const downloader = async () => {
+    //         const { data, error } = await supabase
+    //             .from("solar_images")
+    //             .select("*");
+
+    //         if (error) {
+    //             console.error(error);
+    //             return;
+    //         }
+
+
+    //     }
+    // }, []);
+
+    // const refreshMetadata = async () => {
+    //     const { data, error } = await supabase
+    //         .from("solar_images_metadata")
+    //         .select("image_path, capture_date");
+
+    //     if (error) {
+    //         console.error(error);
+    //         return;
+    //     }
+
+    //     setMetadata(data);
+    // }
+
+
+
     return (
         <div className="whole-container" >
             <header>
@@ -171,6 +260,7 @@ export default function MiniGallery() {
                     carouselItems={selFrequencyCarousel}
                     selected={selFreqCarouselIndex}
                 />
+
             </div>
             <div className="dates">
                 <ImageCarousel
@@ -178,6 +268,10 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
+            <button
+                onClick={downloadCurrent}
+                disabled={!selectedImage}
+            >download selected </button>
 
         </div>
 

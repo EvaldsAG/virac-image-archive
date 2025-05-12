@@ -182,7 +182,7 @@ export default function MiniGallery() {
                 .storage
                 .from('solar_images')
                 .download(`${startPath}/${fileName}-${wav[i]}`);
-            console.log(`${startPath}/${fileName}-${wav[i]}`)
+            // console.log(`${startPath}/${fileName}-${wav[i]}`)
 
             if (error || !blob) {
                 console.error('Download failed:', error);
@@ -203,43 +203,51 @@ export default function MiniGallery() {
             URL.revokeObjectURL(url);
 
         }
-
-
-
-
-
-
-
-
     }
 
-    // useEffect(() => {
-    //     const downloader = async () => {
-    //         const { data, error } = await supabase
-    //             .from("solar_images")
-    //             .select("*");
 
-    //         if (error) {
-    //             console.error(error);
-    //             return;
-    //         }
+    // this is not ideal to download file by file
+    // might consider jszip
+    const downloadDay = async () => {
+
+        const folder = selectedDate.replace(/-/g, "/");
 
 
-    //     }
-    // }, []);
+        const { data: files, error: listErr } = await supabase
+            .storage
+            .from("solar_images")
+            .list(folder);
 
-    // const refreshMetadata = async () => {
-    //     const { data, error } = await supabase
-    //         .from("solar_images_metadata")
-    //         .select("image_path, capture_date");
+        if (listErr) {
+            console.error(listErr);
+            return;
+        }
 
-    //     if (error) {
-    //         console.error(error);
-    //         return;
-    //     }
+        for (const file of files) {
+            const path = `${folder}/${file.name}`;
 
-    //     setMetadata(data);
-    // }
+            const { data: blob, error: dlErr } = await supabase
+                .storage
+                .from("solar_images")
+                .download(path);
+
+            if (dlErr || !blob) {
+                console.error(dlErr);
+                continue;
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+    }
+
+
 
 
 
@@ -272,6 +280,10 @@ export default function MiniGallery() {
                 onClick={downloadCurrent}
                 disabled={!selectedImage}
             >download selected </button>
+            <button
+                onClick={downloadDay}
+                disabled={!selectedImage}
+            >download day </button>
 
         </div>
 

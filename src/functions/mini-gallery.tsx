@@ -261,12 +261,6 @@ export default function MiniGallery() {
 
     }, [selectedImage])
 
-    const testmerq = async () => {
-        if (selectedImage != null)
-            console.log(`${selectedDate}T${selectedImage.image_path.slice(11, 19).replace(/-/g, ":")}Z`);
-
-    }
-
 
 
     // TODO, MAKE THE CALLENDAR BLACK AND RED/ORAGNGE, LESS JARRING
@@ -317,12 +311,6 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
-
-            <button
-                onClick={testmerq}
-                disabled={!selectedImage}
-            >test me rq </button>
-
 
         </div>
 

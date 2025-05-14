@@ -11,6 +11,8 @@ import 'air-datepicker/air-datepicker.css';
 
 import { ImageCarousel, CarouselItem } from "./imageCarousel";
 
+import ClosestSolarImage from "./ClosestSolarImage.tsx";
+
 
 
 export default function MiniGallery() {
@@ -28,6 +30,8 @@ export default function MiniGallery() {
 
     const calendarInputRef = useRef<HTMLDivElement>(null);
     const datepickerRef = useRef<AirDatepicker<HTMLDivElement> | null>(null);
+
+    const [nasaImageTime, setNasaImageTime] = useState(``);
 
 
 
@@ -248,6 +252,27 @@ export default function MiniGallery() {
     }
 
 
+    // "2014-01-01T23:59:59Z"
+
+    useEffect(() => {
+        if (selectedImage != null)
+            setNasaImageTime(`${selectedDate}T${selectedImage.image_path.slice(11, 19).replace(/-/g, ":")}Z`);
+
+
+    }, [selectedImage])
+
+    const testmerq = async () => {
+        if (selectedImage != null)
+            console.log(`${selectedDate}T${selectedImage.image_path.slice(11, 19).replace(/-/g, ":")}Z`);
+
+    }
+
+
+
+    // TODO, MAKE THE CALLENDAR BLACK AND RED/ORAGNGE, LESS JARRING
+
+
+
 
 
 
@@ -256,14 +281,30 @@ export default function MiniGallery() {
             <header>
                 <h1>Gallery</h1>
             </header>
-            {selectedImage && (
-                <img className="mainImage"
-                    src={`${supabaseURL}/storage/v1/object/public/solar_images/${selectedImage.image_path}`}
-                    alt={`Solar capture ${selectedImage.capture_date}`}
+            <div className="mainImage-container">
+                {selectedImage && (
+                    <img className="mainImage"
+                        src={`${supabaseURL}/storage/v1/object/public/solar_images/${selectedImage.image_path}`}
+                        alt={`Solar capture ${selectedImage.capture_date}`}
+                    />
+                )}
+                <ClosestSolarImage
+                    dateTimeUtc={nasaImageTime}
+                    sourceId={11}          // SDO/AIA 335 Å
                 />
-            )}
+            </div>
             <div className="callendar-wavelengths">
-                <div ref={calendarInputRef} />
+                <div>
+                    <div ref={calendarInputRef} />
+                    <button
+                        onClick={downloadCurrent}
+                        disabled={!selectedImage}
+                    >download selected </button>
+                    <button
+                        onClick={downloadDay}
+                        disabled={!selectedImage}
+                    >download day </button>
+                </div>
                 <ImageCarousel
                     carouselItems={selFrequencyCarousel}
                     selected={selFreqCarouselIndex}
@@ -276,14 +317,12 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
+
             <button
-                onClick={downloadCurrent}
+                onClick={testmerq}
                 disabled={!selectedImage}
-            >download selected </button>
-            <button
-                onClick={downloadDay}
-                disabled={!selectedImage}
-            >download day </button>
+            >test me rq </button>
+
 
         </div>
 

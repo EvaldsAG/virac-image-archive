@@ -1,0 +1,16 @@
+.sun-graft {
+    display: grid;
+    grid-template-columns: repeat(2, 256px);
+    gap: 0;
+    line-height: 0;
+    width: 512px;
+    margin: 0 auto;
+    /* transform: scale(.5);
+    transform-origin: top left; */
+}
+
+.sun-graft img {
+    display: block;
+    width: 100%;
+    height: auto;
+}

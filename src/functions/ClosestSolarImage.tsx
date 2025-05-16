@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "./ClosestSolarImage.css";
 
 
+const apiKey = import.meta.env.CORS_PROXY_KEY
+
 
 type ClosestImageResponse = {
     id: number;
@@ -34,12 +36,13 @@ export default function ClosestSolarImage({
 
         async function fetchClosest() {
 
-            const metaRes = await fetch(
-                // `https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(
-                //     dateTimeUtc
-                // )}&sourceId=${sourceId}`
+            const target = `https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(dateTimeUtc)}&sourceId=${sourceId}`;
 
-                `https://corsproxy.io/?https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(dateTimeUtc)}&sourceId=${sourceId}`
+            const proxied = `https://corsproxy.io/?key=${apiKey}&url=${encodeURIComponent(target)}`;
+
+
+            const metaRes = await fetch(
+                proxied
             );
             if (!metaRes.ok) throw new Error("getClosestImage failed");
             const meta: ClosestImageResponse = await metaRes.json();

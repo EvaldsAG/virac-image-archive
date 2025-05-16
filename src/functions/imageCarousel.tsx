@@ -15,7 +15,7 @@ interface CarouselProps {
 }
 
 // This should stay purely UI logic, none of these backend requests or context data modification
-export function ImageCarousel({carouselItems, selected} : CarouselProps) {
+export function ImageCarousel({ carouselItems, selected }: CarouselProps) {
 
     const carouselRef = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
@@ -33,15 +33,15 @@ export function ImageCarousel({carouselItems, selected} : CarouselProps) {
 
         const resizeObserver = new ResizeObserver(() => {
             if (carouselRef.current) {
-            const scrollWidth = carouselRef.current.scrollWidth;
-            const clientWidth = carouselRef.current.clientWidth;
+                const scrollWidth = carouselRef.current.scrollWidth;
+                const clientWidth = carouselRef.current.clientWidth;
 
-            const carouselRefStyle = window.getComputedStyle(carouselRef.current);
+                const carouselRefStyle = window.getComputedStyle(carouselRef.current);
 
-            const marginLeft = parseFloat(carouselRefStyle.marginLeft);
-            const marginRight = parseFloat(carouselRefStyle.marginRight);
+                const marginLeft = parseFloat(carouselRefStyle.marginLeft);
+                const marginRight = parseFloat(carouselRefStyle.marginRight);
 
-            setWidth(scrollWidth - clientWidth - marginLeft - marginRight);
+                setWidth(scrollWidth - clientWidth - marginLeft - marginRight);
             }
         });
 
@@ -70,9 +70,9 @@ export function ImageCarousel({carouselItems, selected} : CarouselProps) {
                             src={`${supabaseURL}/storage/v1/object/public/solar_images/${item.imageUrl}`}
                             onClick={() => isDragging ? {} : item.onImageClick()}
                             draggable="false"
-                            className={"carousel-item" + ((selected === index) ? " selected": "")}
+                            className={"carousel-item" + ((selected === index) ? " selected" : "")}
                             alt={`Slide ${index + 1}`} />
-                            <h4>{item.label}</h4>
+                        <h4>{item.label}</h4>
                     </div>
                 ))}
             </motion.div>

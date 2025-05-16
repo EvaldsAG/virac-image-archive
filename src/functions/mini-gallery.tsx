@@ -262,6 +262,25 @@ export default function MiniGallery() {
     }, [selectedImage])
 
 
+    // const testmerq = async () => {
+    //     const metaRes = await fetch(
+    //         // `https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(
+    //         //     nasaImageTime
+    //         // )}&sourceId=11`
+
+    //         `https://corsproxy.io/?https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(nasaImageTime)}&sourceId=11`
+    //     );
+    //     console.log(nasaImageTime);
+
+    //     if (!metaRes.ok) throw new Error("getClosestImage failed");
+    //     console.log(metaRes);
+    //     const meta = await metaRes.json();
+    //     console.log(meta);
+    // }
+
+
+
+
 
     // TODO, MAKE THE CALLENDAR BLACK AND RED/ORAGNGE, LESS JARRING
 
@@ -284,7 +303,7 @@ export default function MiniGallery() {
                 )}
                 <ClosestSolarImage
                     dateTimeUtc={nasaImageTime}
-                    sourceId={11}          // SDO/AIA 335 Å
+                    sourceId={11}
                 />
             </div>
             <div className="callendar-wavelengths">
@@ -311,6 +330,12 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
+            {/* <div>
+                <button
+                    onClick={testmerq}
+                    disabled={!selectedImage}
+                >test me</button>
+            </div> */}
 
         </div>
 

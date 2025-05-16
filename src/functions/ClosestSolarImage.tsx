@@ -35,9 +35,11 @@ export default function ClosestSolarImage({
         async function fetchClosest() {
 
             const metaRes = await fetch(
-                `https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(
-                    dateTimeUtc
-                )}&sourceId=${sourceId}`
+                // `https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(
+                //     dateTimeUtc
+                // )}&sourceId=${sourceId}`
+
+                `https://corsproxy.io/?https://api.helioviewer.org/v2/getClosestImage/?date=${encodeURIComponent(dateTimeUtc)}&sourceId=${sourceId}`
             );
             if (!metaRes.ok) throw new Error("getClosestImage failed");
             const meta: ClosestImageResponse = await metaRes.json();

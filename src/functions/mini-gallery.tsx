@@ -301,10 +301,15 @@ export default function MiniGallery() {
                         alt={`Solar capture ${selectedImage.capture_date}`}
                     />
                 )}
-                <ClosestSolarImage
-                    dateTimeUtc={nasaImageTime}
-                    sourceId={11}
-                />
+                <div>
+                    <ClosestSolarImage
+                        dateTimeUtc={nasaImageTime}
+                        sourceId={11}
+
+                    />
+                    <p>Courtesy of NASA/SDO and the AIA, EVE, and HMI science teams.</p>
+                </div>
+
             </div>
             <div className="callendar-wavelengths">
                 <div>
@@ -324,6 +329,7 @@ export default function MiniGallery() {
                 />
 
             </div>
+            {/* <br /> */}
             <div className="dates">
                 <ImageCarousel
                     carouselItems={selectedDayCarousel}

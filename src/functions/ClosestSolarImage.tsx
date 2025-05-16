@@ -13,7 +13,7 @@ type ClosestImageResponse = {
 };
 
 interface Props {
-    // ISO-8601 date/time in UTC, e.g. "2014-01-01T23:59:59Z" 
+    // ISO-8601 date/time in UTC, "2014-01-01T23:59:59Z" 
     dateTimeUtc: string;
     // Instrument/datasource ID (see getDataSources if you need others; AIA 335 = 14).
     sourceId: number;
@@ -48,10 +48,10 @@ export default function ClosestSolarImage({
             const meta: ClosestImageResponse = await metaRes.json();
 
 
-            const tileUrl11 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=-1&y=-1&imageScale=3`;
-            const tileUrl01 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=0&y=-1&imageScale=3`;
-            const tileUrl00 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=0&y=0&imageScale=3`;
-            const tileUrl10 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=-1&y=0&imageScale=3`;
+            const tileUrl11 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=-1&y=-1&imageScale=2.3`;
+            const tileUrl01 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=0&y=-1&imageScale=2.3`;
+            const tileUrl00 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=0&y=0&imageScale=2.3`;
+            const tileUrl10 = `https://api.helioviewer.org/v2/getTile/?id=${meta.id}&x=-1&y=0&imageScale=2.3`;
 
             if (!abort) setPngUrl11(tileUrl11), setPngUrl01(tileUrl01), setPngUrl00(tileUrl00), setPngUrl10(tileUrl10);
         }

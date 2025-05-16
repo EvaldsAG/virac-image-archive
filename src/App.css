@@ -4,6 +4,20 @@
   /* margin-top: -15%; */
   padding: 2rem;
   text-align: center;
+  /* height: 100%;
+  min-height: 100vh; */
+}
+
+html,
+body,
+#root {
+  background: linear-gradient(0deg, rgba(8, 8, 9, 1) 39%, rgba(5, 2, 23, 1) 98%);
+}
+
+html,
+body {
+  margin: 0;
+
 }
 
 .logo {
@@ -23,26 +37,6 @@
   margin-left: 140px;
 }
 
-/* .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-} */
-
 .card {
   padding: 2em;
 }
@@ -51,14 +45,7 @@
   color: #888;
 }
 
-body {
-  /* background: rgb(13, 13, 14);
-  background: linear-gradient(80deg, rgba(13, 13, 14, 1) 39%, rgba(5, 2, 23, 1) 98%); */
-  background: rgb(8, 8, 9);
-  background: linear-gradient(0deg, rgba(8, 8, 9, 1) 39%, rgba(5, 2, 23, 1) 98%);
 
-
-}
 
 h1 {
   font-family: 'Roboto', sans-serif;

@@ -64,7 +64,7 @@ export default function ClosestSolarImage({
 
     if (!pngUrl11 || !pngUrl01 || !pngUrl00 || !pngUrl10) return <p>Loading closest image…</p>;
     return (
-        <a href='https://sdo.gsfc.nasa.gov/data/aiahmi/'>
+        <a href='https://sdo.gsfc.nasa.gov/data/aiahmi/' target="_blank" rel="noopener noreferrer">
             <div className="sun-graft">
                 <img src={pngUrl11} alt={alt} />
                 <img src={pngUrl01} alt={alt} />

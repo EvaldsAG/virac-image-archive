@@ -24,7 +24,8 @@ export const MetadataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const refreshMetadata = async () => {
         const { data, error } = await supabase
             .from("solar_images_metadata")
-            .select("image_path, capture_date");
+            .select("image_path, capture_date")
+            .order("image_path", { ascending: true });
 
         if (error) {
             console.error(error);

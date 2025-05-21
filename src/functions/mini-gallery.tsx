@@ -13,6 +13,8 @@ import { ImageCarousel, CarouselItem } from "./imageCarousel";
 
 import ClosestSolarImage from "./ClosestSolarImage.tsx";
 
+import JSZip from 'jszip';
+
 
 
 export default function MiniGallery() {
@@ -172,12 +174,15 @@ export default function MiniGallery() {
         //2025/02/11/17-33-21-w2.png
         //2025/02/11/17-33-21-w3.png
         //2025/02/11/17-33-21-w4.png
-        const modifiedPath = selectedPath.split('/').pop() ?? 'sum ting wong';
+        const modifiedPath = selectedPath.split('/').pop() ?? '';
         const startPath = selectedDate.replace(/-/g, "/");
-        // console.log(startPath);
-        const fileName = modifiedPath.slice(0, 8) ?? 'sum ting wong 2';
+
+
+        const fileName = modifiedPath.slice(0, 8) ?? '';
+
 
         const wav = ['w1.png', 'w2.png', 'w3.png', 'w4.png'];
+        const zip = new JSZip();
 
         for (let i = 0; i < wav.length; i++) {
 
@@ -192,21 +197,19 @@ export default function MiniGallery() {
                 console.error('Download failed:', error);
                 return;
             }
-            // turn the blob into an object-URL
-            const url = URL.createObjectURL(blob);
-
-            // create a temporary <a download> element and click it
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = (`${fileName}-${wav[i]}`);          // this is the name that shows up in “Save as…”
-            document.body.appendChild(a);   // Firefox needs the link in the DOM
-            a.click();
-            a.remove();
-
-            // tidy up
-            URL.revokeObjectURL(url);
-
+            zip.file(`${fileName}-${wav[i]}`, blob);
         }
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(zipBlob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${startPath}/${fileName}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url); // clean up
     }
 
 
@@ -215,6 +218,7 @@ export default function MiniGallery() {
     const downloadDay = async () => {
 
         const folder = selectedDate.replace(/-/g, "/");
+        const zip = new JSZip();
 
 
         const { data: files, error: listErr } = await supabase
@@ -239,20 +243,46 @@ export default function MiniGallery() {
                 console.error(dlErr);
                 continue;
             }
+            zip.file(`${path}`, blob);
 
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
+            // const url = URL.createObjectURL(blob);
+            // const a = document.createElement("a");
+            // a.href = url;
+            // a.download = file.name;
+            // document.body.appendChild(a);
+            // a.click();
+            // a.remove();
+            // URL.revokeObjectURL(url);
         }
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(zipBlob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${folder}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url); // clean up
+
+    }
+    const testmerq = async () => {
+        const { data, error } = await supabase
+            .from("solar_images_metadata")
+            .select("image_path, capture_date")
+            .order("image_path", { ascending: true });
+
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        console.log(data);
     }
 
 
-    // "2014-01-01T23:59:59Z"
 
     useEffect(() => {
         if (selectedImage != null)
@@ -318,6 +348,10 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
+            <button
+                onClick={testmerq}
+                disabled={!selectedImage}
+            >test me rq </button>
 
         </div>
 

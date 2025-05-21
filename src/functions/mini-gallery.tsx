@@ -83,6 +83,7 @@ export default function MiniGallery() {
         datepickerRef.current?.destroy(); // recreates the calendar if the metadata changes
         datepickerRef.current = new AirDatepicker(calendarInputRef.current, {
             locale: localeEn,
+            toggleSelected: false,
             inline: true,
             selectedDates: [new Date(latestDate)],
             onRenderCell({ date, cellType }) {
@@ -293,13 +294,13 @@ export default function MiniGallery() {
 
             </div>
             <div className="callendar-wavelengths">
-                <div>
+                <div className="callendar">
                     <div ref={calendarInputRef} />
-                    <button
+                    <button className="callendar-btn"
                         onClick={downloadCurrent}
                         disabled={!selectedImage}
                     >download selected </button>
-                    <button
+                    <button className="callendar-btn"
                         onClick={downloadDay}
                         disabled={!selectedImage}
                     >download day </button>

@@ -23,9 +23,7 @@ function App() {
       </div>
       <div className="title">
 
-
         <h1>VIRAC<br />Solar Image Archive</h1>
-
 
       </div>
       <div className="spacer"></div>

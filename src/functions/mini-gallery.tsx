@@ -267,20 +267,6 @@ export default function MiniGallery() {
         URL.revokeObjectURL(url); // clean up
 
     }
-    const testmerq = async () => {
-        const { data, error } = await supabase
-            .from("solar_images_metadata")
-            .select("image_path, capture_date")
-            .order("image_path", { ascending: true });
-
-
-        if (error) {
-            console.error(error);
-            return;
-        }
-
-        console.log(data);
-    }
 
 
 
@@ -348,10 +334,6 @@ export default function MiniGallery() {
                     selected={selDayCarouselIndex}
                 />
             </div>
-            <button
-                onClick={testmerq}
-                disabled={!selectedImage}
-            >test me rq </button>
 
         </div>
 

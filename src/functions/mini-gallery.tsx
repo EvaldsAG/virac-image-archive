@@ -312,14 +312,16 @@ export default function MiniGallery() {
             <div className="callendar-wavelengths">
                 <div className="callendar">
                     <div ref={calendarInputRef} />
-                    <button className="callendar-btn"
-                        onClick={downloadCurrent}
-                        disabled={!selectedImage}
-                    >download selected </button>
-                    <button className="callendar-btn"
-                        onClick={downloadDay}
-                        disabled={!selectedImage}
-                    >download day </button>
+                    <div className="both-button">
+                        <button className="callendar-btn"
+                            onClick={downloadCurrent}
+                            disabled={!selectedImage}
+                        >download selected </button>
+                        <button className="callendar-btn"
+                            onClick={downloadDay}
+                            disabled={!selectedImage}
+                        >download day </button>
+                    </div>
                 </div>
                 <ImageCarousel
                     carouselItems={selFrequencyCarousel}

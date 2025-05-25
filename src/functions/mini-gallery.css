@@ -35,21 +35,32 @@
 .callendar-wavelengths {
     display: flex;
     padding: 20px;
-    background: #000000d4;
+    /* background: #000000d4; */
 
 }
 
 
 
-.dates {
+/* .dates {
     background: #000000d4;
+} */
+
+.both-button {
+    display: grid;
+    gap: 10px;
 }
 
-@media only screen and (max-width: 768px) {
+.callendar-btn {
+    width: 250px;
+}
+
+@media only screen and (max-width: 1000px) {
     .mainImage-container {
-        display: flex;
-        overflow: scroll;
+        display: grid;
+        /* overflow: scroll; */
         gap: 10px;
+        align-items: center;
+        justify-content: center;
     }
 
     .mainImage {
@@ -62,26 +73,20 @@
     .callendar {
         display: flex;
         gap: 20px;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
+        justify-content: center;
     }
 
-    .callendar-btn {
-        width: 250px;
-    }
+
 
     .callendar-wavelengths {
         display: block;
         padding: 20px;
-        background: #000000d4;
+        /* background: #000000d4; */
 
     }
 
-
-
-    .dates {
-        background: #000000d4;
-    }
 
 
 }

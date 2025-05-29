@@ -183,7 +183,7 @@ export default function MiniGallery() {
         // const wav = selectedPath.split('-').pop()
         const wav = [];
 
-        for (const [i, value] of picArray.entries()) {
+        for (const [, value] of picArray.entries()) {
             const frequencyStr = value.image_path.slice(20, -4);
             wav.push(`${frequencyStr}.png`)
 

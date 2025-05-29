@@ -169,19 +169,26 @@ export default function MiniGallery() {
         if (!selectedImage) return;
 
         const selectedPath = selectedImage.image_path;
-        //we have images from w1 to w4
-        //2025/02/11/17-33-21-w1.png
-        //2025/02/11/17-33-21-w2.png
-        //2025/02/11/17-33-21-w3.png
-        //2025/02/11/17-33-21-w4.png
         const modifiedPath = selectedPath.split('/').pop() ?? '';
         const startPath = selectedDate.replace(/-/g, "/");
 
 
         const fileName = modifiedPath.slice(0, 8) ?? '';
 
+        const dateTimePathPart = selectedImage.image_path.slice(0, 19);
+        const picArray = imagesByDate[selectedDate]
+            .filter(img => img.image_path.startsWith(dateTimePathPart));
 
-        const wav = ['w1.png', 'w2.png', 'w3.png', 'w4.png'];
+
+        // const wav = selectedPath.split('-').pop()
+        const wav = [];
+
+        for (const [i, value] of picArray.entries()) {
+            const frequencyStr = value.image_path.slice(20, -4);
+            wav.push(`${frequencyStr}.png`)
+
+        }
+
         const zip = new JSZip();
 
         for (let i = 0; i < wav.length; i++) {

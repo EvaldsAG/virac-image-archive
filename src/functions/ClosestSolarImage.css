@@ -3,7 +3,7 @@
     grid-template-columns: repeat(2, 256px);
     gap: 0;
     line-height: 0;
-    width: 512px;
+    width: 32rem;
     margin: 0 auto;
     /* transform: scale(.5);
     transform-origin: top left; */

@@ -300,12 +300,14 @@ export default function MiniGallery() {
                 <h1>Gallery</h1>
             </header>
             <div className="mainImage-container">
-                {selectedImage && (
-                    <img className="mainImage"
-                        src={`${supabaseURL}/storage/v1/object/public/solar_images/${selectedImage.image_path}`}
-                        alt={`Solar capture ${selectedImage.capture_date}`}
-                    />
-                )}
+                <div>
+                    {selectedImage && (
+                        <img className="mainImage"
+                            src={`${supabaseURL}/storage/v1/object/public/solar_images/${selectedImage.image_path}`}
+                            alt={`Solar capture ${selectedImage.capture_date}`}
+                        />
+                    )}
+                </div>
                 <div>
                     <ClosestSolarImage
                         dateTimeUtc={nasaImageTime}

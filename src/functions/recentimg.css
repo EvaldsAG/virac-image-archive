@@ -80,7 +80,6 @@
 
 
 
-
     .recentSelect {
 
         align-self: center;
@@ -91,5 +90,11 @@
         gap: 10px;
 
     }
+
+    .recentImage {
+        width: 40rem;
+        height: auto;
+    }
+
 
 }

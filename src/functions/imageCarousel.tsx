@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import "./imageCarousel.css";
 import { supabaseURL } from "./supabaseClient";
@@ -33,15 +33,20 @@ export function ImageCarousel({ carouselItems, selected }: CarouselProps) {
 
         const resizeObserver = new ResizeObserver(() => {
             if (carouselRef.current) {
-                const scrollWidth = carouselRef.current.scrollWidth;
-                const clientWidth = carouselRef.current.clientWidth;
+                // const scrollWidth = carouselRef.current.scrollWidth;
+                // const clientWidth = carouselRef.current.clientWidth;
 
-                const carouselRefStyle = window.getComputedStyle(carouselRef.current);
+                // const carouselRefStyle = window.getComputedStyle(carouselRef.current);
 
-                const marginLeft = parseFloat(carouselRefStyle.marginLeft);
-                const marginRight = parseFloat(carouselRefStyle.marginRight);
+                // const marginLeft = parseFloat(carouselRefStyle.marginLeft);
+                // const marginRight = parseFloat(carouselRefStyle.marginRight);
 
-                setWidth(scrollWidth - clientWidth - marginLeft - marginRight);
+                // setWidth(scrollWidth - clientWidth - marginLeft - marginRight);
+                const { scrollWidth, clientWidth } = carouselRef.current;
+                const { marginLeft, marginRight } = window.getComputedStyle(carouselRef.current);
+                const raw = scrollWidth - clientWidth - parseFloat(marginLeft) - parseFloat(marginRight);
+
+                setWidth(Math.max(raw, 0));
             }
         });
 
@@ -49,15 +54,41 @@ export function ImageCarousel({ carouselItems, selected }: CarouselProps) {
         return () => resizeObserver.disconnect();
     }, [carouselRef]);
 
+
+    useLayoutEffect(() => {
+
+        if (!carouselRef.current) return;
+        const el = carouselRef.current;
+        const update = () => {
+            const { scrollWidth, clientWidth } = el;
+            setWidth(Math.max(scrollWidth - clientWidth, 0));
+        };
+
+        update();
+
+        // run again when images finish loading
+        const imgs = Array.from(el.querySelectorAll('img'));
+        imgs.forEach(img =>
+            img.complete ? null : img.addEventListener('load', update)
+        );
+
+        x.set(0);
+
+        return () =>
+            imgs.forEach(img => img.removeEventListener('load', update));
+
+    }, [carouselItems.length]);
+
     return (
         <div className="carousel-container">
             <motion.div /** theres an issue where when i stop dragging without momentum the scollbar jumps to the scroll 0 aka to the beggining */
                 ref={carouselRef}
                 className="carousel"
-                style={{ x: xTransform }}
+                style={{ x }}
                 drag="x"
                 dragConstraints={{ right: 0, left: -width }}
                 dragElastic={0.2}
+                initial={false}
                 // Smooth transition when dragging ends
                 transition={{ stiffness: 300, damping: 50, mass: 100000 }}
 

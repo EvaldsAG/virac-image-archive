@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import "./imageCarousel.css";
 import { supabaseURL } from "./supabaseClient";
 
@@ -21,7 +21,7 @@ export function ImageCarousel({ carouselItems, selected }: CarouselProps) {
     const [width, setWidth] = useState(0);
 
     const x = useMotionValue(0);
-    const xTransform = useTransform(x, [0, -width], [0, -width]);
+    // const xTransform = useTransform(x, [0, -width], [0, -width]);
 
     const [isDragging, setIsDragging] = useState(false);
 
